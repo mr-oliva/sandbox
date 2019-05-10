@@ -8,5 +8,7 @@ import (
 
 func main() {
 	bar := foo.NewBar("fushigi")
+	bar2 := &foo.Bar{}
 	fmt.Println(bar.GetName())
+	fmt.Println(bar2.GetName())
 }

@@ -1,13 +1,14 @@
 package foo
 
-type bar struct {
+type Bar struct {
 	name string
 }
 
-func NewBar(name string) *bar {
-	return &bar{name}
+// NewBar return Bar
+func NewBar(name string) *Bar {
+	return &Bar{name}
 }
 
-func (b *bar) GetName() string {
+func (b *Bar) GetName() string {
 	return b.name
 }
