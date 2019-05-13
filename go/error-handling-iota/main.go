@@ -1,7 +1,13 @@
 package main
 
-import "github.com/bookun/sandbox/go/error-handling-iota/sample"
+import (
+	"log"
+
+	"github.com/bookun/sandbox/go/error-handling-iota/sample"
+)
 
 func main() {
-	sample.Sample(3)
+	if errCode, err := sample.Sample(3); err != nil {
+		log.Fatalf("errCode: %v, err: %v\n", errCode, err)
+	}
 }

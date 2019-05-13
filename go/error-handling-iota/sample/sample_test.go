@@ -8,19 +8,20 @@ import (
 
 func TestSample(t *testing.T) {
 	cases := []struct {
-		name          string
-		arg           int
-		expectedError sample.ErrorCode
+		name              string
+		arg               int
+		expectedErrorCode sample.ErrorCode
 	}{
-		{name: "1", arg: 1, expectedError: sample.FooError},
-		{name: "2", arg: 2, expectedError: sample.BarError},
-		{name: "3", arg: 3, expectedError: sample.OK},
+		{name: "1", arg: 1, expectedErrorCode: sample.FooError},
+		{name: "2", arg: 2, expectedErrorCode: sample.BarError},
+		{name: "3", arg: 3, expectedErrorCode: sample.OK},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			if c.expectedError != sample.Sample(c.arg) {
-				t.Errorf("got %d, want %d\n", sample.Sample(c.arg), c.expectedError)
+			resultErrCode, _ := sample.Sample(c.arg)
+			if c.expectedErrorCode != resultErrCode {
+				t.Errorf("got %d, want %d\n", resultErrCode, c.expectedErrorCode)
 			}
 		})
 	}

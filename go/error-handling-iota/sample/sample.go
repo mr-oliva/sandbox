@@ -1,5 +1,7 @@
 package sample
 
+import "fmt"
+
 const (
 	OK = iota
 	FooError
@@ -8,12 +10,12 @@ const (
 
 type ErrorCode int
 
-func Sample(num int) ErrorCode {
+func Sample(num int) (ErrorCode, error) {
 	if num == 1 {
-		return FooError
+		return FooError, fmt.Errorf("num=1 is FooError")
 	}
 	if num == 2 {
-		return BarError
+		return BarError, fmt.Errorf("num=2 is BarError")
 	}
-	return OK
+	return OK, nil
 }
