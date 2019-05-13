@@ -6,7 +6,9 @@ const (
 	BarError
 )
 
-func Sample(num int) int {
+type ErrorCode int
+
+func Sample(num int) ErrorCode {
 	if num == 1 {
 		return FooError
 	}

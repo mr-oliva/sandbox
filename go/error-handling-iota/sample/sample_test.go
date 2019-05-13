@@ -10,7 +10,7 @@ func TestSample(t *testing.T) {
 	cases := []struct {
 		name          string
 		arg           int
-		expectedError int
+		expectedError sample.ErrorCode
 	}{
 		{name: "1", arg: 1, expectedError: sample.FooError},
 		{name: "2", arg: 2, expectedError: sample.BarError},
