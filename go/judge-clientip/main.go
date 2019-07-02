@@ -1,16 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/bookun/sandbox/go/judge-clientip/ip"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		clientIP := r.Header.Get("X-Forwarded-For")
-		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `{"ip": "%s"}`, clientIP)
-	})
+	http.HandleFunc("/", ip.GetIP)
 
-    http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil)
 }
