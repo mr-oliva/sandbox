@@ -88,20 +88,19 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 	kind := getKind(host)
 
 	result := entity.Result{IP: clientIP, Host: host, Kind: kind, Error: ""}
+	if err := hostResearch.cache.Add(ctx, clientIP, result); err != nil {
+		log.Println(err.Error())
+	}
 	result.From = "dns"
 	if err := json.NewEncoder(&resultBuf).Encode(result); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	fmt.Fprint(w, resultBuf.String())
-	if err := hostResearch.cache.Add(ctx, clientIP, result); err != nil {
-		log.Println(err.Error())
-	}
 }
 
 func getKind(host string) string {
 	for provider, hostPattern := range regMap {
-		println(provider)
 		if hostPattern.MatchString(host) {
 			return provider
 		}
