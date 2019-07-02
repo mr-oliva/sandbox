@@ -53,7 +53,12 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 	//	log.Println(err.Error())
 	//	return
 	//}
-	cache := cache.NewMemcache(os.Getenv("memcacheServer"))
+	//cache := cache.NewMemcache(os.Getenv("memcacheServer"))
+	cache, err := cache.NewRedis(os.Getenv("redisAddr"), os.Getenv("redisPassword"))
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
 	hostResearch := &hostResearch{cache: cache}
 	cacheResult, err := hostResearch.cache.Get(ctx, clientIP)
 	if err != nil {
@@ -69,11 +74,11 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	myDial := func(ctx context.Context, network, address string) (net.Conn, error) {
+	googleDNSDialer := func(ctx context.Context, network, address string) (net.Conn, error) {
 		d := net.Dialer{}
-		return d.DialContext(ctx, network, "8.8.8.8")
+		return d.DialContext(ctx, "udp", "8.8.8.8:53")
 	}
-	resolver := net.Resolver{PreferGo: false, StrictErrors: true, Dial: myDial}
+	resolver := net.Resolver{PreferGo: true, Dial: googleDNSDialer}
 	hosts, err := resolver.LookupAddr(ctx, clientIP)
 	if err != nil {
 		result := entity.Result{IP: clientIP, Host: "-", Kind: "no set", Error: err.Error()}
