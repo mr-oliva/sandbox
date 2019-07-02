@@ -48,11 +48,12 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	cache, err := cache.NewFirebase(ctx, os.Getenv("projectID"))
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
+	//cache, err := cache.NewFirebase(ctx, os.Getenv("projectID"))
+	//if err != nil {
+	//	log.Println(err.Error())
+	//	return
+	//}
+	cache := cache.NewMemcache(os.Getenv("memcacheServer"))
 	hostResearch := &hostResearch{cache: cache}
 	cacheResult, err := hostResearch.cache.Get(ctx, clientIP)
 	if err != nil {
@@ -70,9 +71,9 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 
 	myDial := func(ctx context.Context, network, address string) (net.Conn, error) {
 		d := net.Dialer{}
-		return d.DialContext(ctx, network, address)
+		return d.DialContext(ctx, network, "8.8.8.8")
 	}
-	resolver := net.Resolver{PreferGo: true, StrictErrors: true, Dial: myDial}
+	resolver := net.Resolver{PreferGo: false, StrictErrors: true, Dial: myDial}
 	hosts, err := resolver.LookupAddr(ctx, clientIP)
 	if err != nil {
 		result := entity.Result{IP: clientIP, Host: "-", Kind: "no set", Error: err.Error()}
