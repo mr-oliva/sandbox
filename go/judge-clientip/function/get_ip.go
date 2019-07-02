@@ -36,8 +36,6 @@ type hostResearch struct {
 }
 
 func GetIP(w http.ResponseWriter, r *http.Request) {
-	//{"ip":"222.145.13.136","host":"p7103136-ipngn32501marunouchi.tokyo.ocn.ne.jp.","kind":"hoge ocn","success":true}
-
 	w.Header().Set("Content-Type", "application/json")
 
 	var resultBuf bytes.Buffer
@@ -49,10 +47,8 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 	clientIP = strings.Split(clientIP, ",")[0]
 
 	ctx := context.Background()
-	//	ctx := appengine.NewContext(r)
 
 	cache, err := cache.NewFirebase(ctx, os.Getenv("projectID"))
-	//cache, err := cache.NewFirebase(ctx, "./bookun-221813-firebase-adminsdk-cvlu9-d3be142aba.json")
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -111,16 +107,4 @@ func getKind(host string) string {
 		}
 	}
 	return "other"
-	// フレッツ光ネクスト
-	// pXXXX-ipngn[番号].[ビル名].[提供県名].ocn.ne.jp
-	// IPoE 動的
-	// pXXXX-ipoe.ipoe.ocn.ne.jp
-	// Bフレッツ
-	// pXXXX-ipbf[NN][ビル名].[提供県名].ocn.ne.jp
-	// フレッツ光プレミアム
-	// pXXXX-ipbfp[NN][ビル名].[提供県名].ocn.ne.jp
-	// モバイルONE
-	// pXXXX-omed[NN].[提供県名].ocn.ne.jp
-
-	// pr(.+)-ipngnr(.+).r(.*).ocn.ne.jp
 }
