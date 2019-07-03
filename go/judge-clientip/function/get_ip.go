@@ -36,6 +36,13 @@ type hostResearch struct {
 }
 
 func GetIP(w http.ResponseWriter, r *http.Request) {
+	service := r.URL.Query().Get("service")
+	if service == "" {
+		log.Println("not found: service parameter")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 
 	var resultBuf bytes.Buffer
@@ -81,7 +88,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 	resolver := net.Resolver{PreferGo: true, Dial: googleDNSDialer}
 	hosts, err := resolver.LookupAddr(ctx, clientIP)
 	if err != nil {
-		result := entity.Result{IP: clientIP, Host: "-", Kind: "no set", Error: err.Error()}
+		result := entity.Result{IP: clientIP, Host: "-", Kind: "no set", Error: err.Error(), Service: service}
 		if err := json.NewEncoder(&resultBuf).Encode(result); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -93,7 +100,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 	host := strings.Join(hosts, ",")
 	kind := getKind(host)
 
-	result := entity.Result{IP: clientIP, Host: host, Kind: kind, Error: ""}
+	result := entity.Result{IP: clientIP, Host: host, Kind: kind, Error: "", Service: service}
 	if err := hostResearch.cache.Add(ctx, clientIP, result); err != nil {
 		log.Println(err.Error())
 	}

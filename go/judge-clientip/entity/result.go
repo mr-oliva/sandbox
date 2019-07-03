@@ -1,11 +1,12 @@
 package entity
 
 type Result struct {
-	IP    string `json:"ip" firestore:"ip"`
-	Host  string `json:"host" firestore:"host"`
-	Kind  string `json:"kind" firestore:"kind"`
-	Error string `json:"error" firestore:"error"`
-	From  string `json:"from" firestore:"from"`
+	IP      string `json:"ip" firestore:"ip"`
+	Host    string `json:"host" firestore:"host"`
+	Kind    string `json:"kind" firestore:"kind"`
+	Error   string `json:"error" firestore:"error"`
+	From    string `json:"from" firestore:"from"`
+	Service string `json:"service" firestore:"service"`
 }
 
 func (r *Result) IsEmpty() bool {
