@@ -78,7 +78,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		log.Printf("ip: %s\thost: %s\tkind: %s\tservice: %s\n", cacheResult.IP, cacheResult.Host, cacheResult.Kind, service)
+		fmt.Printf("[ACCESS]\tip: %s\thost: %s\tkind: %s\tservice: %s\n", cacheResult.IP, cacheResult.Host, cacheResult.Kind, service)
 		fmt.Fprint(w, resultBuf.String())
 		return
 	}
@@ -96,7 +96,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		fmt.Fprint(w, resultBuf.String())
-		log.Printf("ip: %s\thost: %s\tkind: %s\tservice: %s\n", clientIP, "-", "no_set", service)
+		fmt.Printf("[ACCESS]\tip: %s\thost: %s\tkind: %s\tservice: %s\n", clientIP, "-", "no_set", service)
 		return
 	}
 
@@ -112,7 +112,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Printf("ip: %s\thost: %s\tkind: %s\tservice: %s\n", clientIP, host, kind, service)
+	fmt.Printf("[ACCESS]\tip: %s\thost: %s\tkind: %s\tservice: %s\n", clientIP, host, kind, service)
 	fmt.Fprint(w, resultBuf.String())
 }
 
