@@ -122,5 +122,8 @@ func getKind(host string) string {
 			return provider
 		}
 	}
+	if strings.Contains(host, "ocn") {
+		return "ocn_other"
+	}
 	return "other"
 }
