@@ -27,7 +27,7 @@ var (
 )
 
 type cacher interface {
-	Get(context.Context, string) (entity.Result, error)
+	Get(context.Context, string, string) (entity.Result, error)
 	Add(context.Context, string, entity.Result) error
 }
 
@@ -37,14 +37,14 @@ type hostResearch struct {
 
 func GetIP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
 	service := r.URL.Query().Get("service")
 	if service == "" {
 		log.Println("not found: service parameter")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
 
 	var resultBuf bytes.Buffer
 
@@ -68,7 +68,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	hostResearch := &hostResearch{cache: cache}
-	cacheResult, err := hostResearch.cache.Get(ctx, clientIP)
+	cacheResult, err := hostResearch.cache.Get(ctx, clientIP, service)
 	if err != nil {
 		log.Println(err.Error())
 		return

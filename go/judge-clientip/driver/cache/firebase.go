@@ -27,13 +27,13 @@ func NewFirebase(ctx context.Context, projectID string) (*Firebase, error) {
 }
 
 func (f *Firebase) Add(ctx context.Context, ip string, result entity.Result) error {
-	_, err := f.client.Collection("ocn-ip").Doc(ip).Set(ctx, result)
+	_, err := f.client.Collection("services").Doc(result.Service).Collection("log").Doc(ip).Set(ctx, result)
 	return err
 }
 
-func (f *Firebase) Get(ctx context.Context, ip string) (entity.Result, error) {
+func (f *Firebase) Get(ctx context.Context, ip, service string) (entity.Result, error) {
 	result := entity.Result{}
-	cache, err := f.client.Collection("ocn-ip").Doc(ip).Get(ctx)
+	cache, err := f.client.Collection("services").Doc(service).Collection("log").Doc(ip).Get(ctx)
 	if !cache.Exists() {
 		return result, nil
 	}
