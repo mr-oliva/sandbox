@@ -36,6 +36,7 @@ type hostResearch struct {
 }
 
 func GetIP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	service := r.URL.Query().Get("service")
 	if service == "" {
 		log.Println("not found: service parameter")
