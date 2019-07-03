@@ -56,13 +56,13 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	//cache, err := cache.NewFirebase(ctx, os.Getenv("projectID"))
+	cache, err := cache.NewFirebase(ctx, os.Getenv("projectID"))
 	//if err != nil {
 	//	log.Println(err.Error())
 	//	return
 	//}
 	//cache := cache.NewMemcache(os.Getenv("memcacheServer"))
-	cache, err := cache.NewRedis(os.Getenv("redisAddr"), os.Getenv("redisPassword"))
+	//cache, err := cache.NewRedis(os.Getenv("redisAddr"), os.Getenv("redisPassword"))
 	if err != nil {
 		log.Println(err.Error())
 		return
