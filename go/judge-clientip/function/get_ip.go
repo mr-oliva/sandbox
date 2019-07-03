@@ -89,7 +89,7 @@ func GetIP(w http.ResponseWriter, r *http.Request) {
 	resolver := net.Resolver{PreferGo: true, Dial: googleDNSDialer}
 	hosts, err := resolver.LookupAddr(ctx, clientIP)
 	if err != nil {
-		result := entity.Result{IP: clientIP, Host: "-", Kind: "no set", Error: err.Error(), Service: service}
+		result := entity.Result{IP: clientIP, Host: "-", Kind: "no_set", Error: err.Error(), Service: service}
 		if err := json.NewEncoder(&resultBuf).Encode(result); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
