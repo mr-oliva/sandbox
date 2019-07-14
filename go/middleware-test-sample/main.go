@@ -8,6 +8,7 @@ import (
 )
 
 func hoge(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, r.Host)
 	fmt.Fprintln(w, "Main handler")
 }
 

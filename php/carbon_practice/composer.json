@@ -1,0 +1,12 @@
+{
+    "name": "bookun/carbon_practice",
+    "authors": [
+        {
+            "name": "bookun",
+            "email": "kutsuzawa2851@gmail.com"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "^2.20"
+    }
+}
